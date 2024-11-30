@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultDisplay = document.getElementById("result");
 
   const selectedSentences = [];
-  while (selectedSentences.length < 10) {
+  while (selectedSentences.length < 2) {
     const randomIndex = Math.floor(Math.random() * SAMPLE_SENTENCES.length);
     const sentence = SAMPLE_SENTENCES[randomIndex];
     if (!selectedSentences.includes(sentence)) {
@@ -53,7 +53,27 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         resultDisplay.textContent = "모든 문장을 완료했습니다! 🎉";
         resultDisplay.style.color = "blue";
+
+        const moveMessage = document.createElement("p");
+        moveMessage.id = "countdown";
+        moveMessage.textContent = "3초 뒤에 결과 페이지로 이동합니다.";
+        moveMessage.style.marginTop = "10px";
+        moveMessage.style.color = "black";
+        moveMessage.style.fontWeight = "normal";
+        resultDisplay.appendChild(moveMessage);
+
         userInput.disabled = true;
+
+        let countdown = 3;
+        const interval = setInterval(() => {
+          if (countdown > 1) {
+            countdown--;
+            moveMessage.textContent = `${countdown}초 뒤에 결과 페이지로 이동합니다.`;
+          } else {
+            clearInterval(interval);
+            window.location.href = "/typing-result.html";
+          }
+        }, 1000);
       }
     } else {
       resultDisplay.textContent = "다시 시도해주세요. ❌";
