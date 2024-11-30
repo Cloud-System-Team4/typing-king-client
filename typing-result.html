@@ -6,7 +6,7 @@
     <title>내일은 타자왕</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/typing-battle.css" />
+    <link rel="stylesheet" href="css/typing-result.css" />
   </head>
   <body>
     <header>
@@ -19,24 +19,19 @@
       </div>
     </header>
 
-    <main id="main-content">
-      <h2>문장을 입력한 후 Enter키를 눌러주세요.</h2>
-      <section id="typing-game">
-        <div class="sentence">
-          <label for="given-sentence">주어진 문장</label>
-          <div id="given-sentence"></div>
+    <main id="result-main">
+      <h2>타자 대결 결과를 확인해 주세요.</h2>
+      <div class="timer-container">
+        <div class="timer-box"><span>내 기록</span><span>(소요시간)</span></div>
+        <div class="vs-box">vs</div>
+        <div class="timer-box">
+          <span>상대 기록</span><span>(소요시간)</span>
         </div>
-        <div class="sentence">
-          <label for="user-input">입력</label>
-          <input
-            type="text"
-            id="user-input"
-            placeholder="여기에 입력하세요"
-            autocomplete="off"
-          />
-        </div>
-        <div id="result"></div>
-      </section>
+      </div>
+      <div class="result-message"><strong>(내/상대)</strong>가 이겼습니다!</div>
+      <a href="/typing-battle.html"
+        ><button id="retry-button">랜덤매칭으로 재도전!</button></a
+      >
     </main>
 
     <footer>
