@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내일은 타자왕</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/typing-battle.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <a href="/typing-battle.html"
+          ><div class="header-logo">내일은 타자왕</div></a
+        >
+        <nav class="header-menu">
+          <a href="#about">소개</a>
+          <a href="#features">기능</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section id="typing-game">
+        <h2>문장을 입력한 후 Enter키를 눌러주세요.</h2>
+        <div class="sentence">
+          <label for="given-sentence">주어진 문장</label>
+          <div id="given-sentence">
+            The quick brown fox jumps over the lazy dog.
+          </div>
+        </div>
+        <div class="sentence">
+          <label for="user-input">입력</label>
+          <input
+            type="text"
+            id="user-input"
+            placeholder="여기에 입력하세요"
+            autocomplete="off"
+          />
+        </div>
+        <div id="result"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2024 Typing King</p>
+      <div class="footer-service-link">
+        <a
+          href="https://github.com/Cloud-System-Team4"
+          target="_blank"
+          class="github-link"
+        >
+          GitHub 바로가기
+        </a>
+      </div>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="js/typing-battle.js"></script>
+  </body>
+</html>

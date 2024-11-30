@@ -1,0 +1,65 @@
+#typing-game {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 600px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+.sentence {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+label {
+  font-weight: bold;
+  white-space: nowrap;
+  width: 80px;
+}
+
+#given-sentence {
+  flex: 1;
+  background-color: #eaeaea;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: left;
+  user-select: none;
+}
+
+#user-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#user-input:focus {
+  outline: none;
+  border-color: #1e90ff;
+  box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+}
+
+#result {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
