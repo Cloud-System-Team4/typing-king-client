@@ -1,0 +1,32 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
