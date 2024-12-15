@@ -26,57 +26,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const userInput = document.getElementById("user-input");
   const resultDisplay = document.getElementById("result");
 
-  const selectedSentences = [];
-  while (selectedSentences.length < 2) {
-    const randomIndex = Math.floor(Math.random() * SAMPLE_SENTENCES.length);
-    const sentence = SAMPLE_SENTENCES[randomIndex];
-    if (!selectedSentences.includes(sentence)) {
-      selectedSentences.push(sentence);
+  const socket = new WebSocket("ws://localhost:9999");
+
+  let startTime = null;
+
+  socket.onopen = () => {
+    console.log("서버에 연결되었습니다.");
+  };
+
+  socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+
+    if (message.type === "START") {
+      givenSentence.textContent = message.sentence;
+      resultDisplay.textContent = `게임 시작! 당신은 ${message.role}입니다.`;
+      resultDisplay.style.color = "black";
+      startTime = new Date().getTime();
+      userInput.disabled = false;
+      userInput.focus();
+    } else if (message.type === "RESULT") {
+      resultDisplay.innerHTML = `
+        <p>당신의 시간: ${message.your_time}초</p>
+        <p>상대방의 시간: ${message.opponent_time}초</p>
+        <p>승자: ${message.winner}</p>
+      `;
+      userInput.disabled = true;
     }
-  }
+  };
 
-  let currentSentenceIndex = 0;
+  socket.onclose = () => {
+    console.log("서버와 연결이 종료되었습니다.");
+  };
 
-  givenSentence.textContent = selectedSentences[currentSentenceIndex];
+  socket.onerror = (error) => {
+    console.error("WebSocket 오류:", error);
+  };
 
   function checkAnswer() {
     const userText = userInput.value.trim();
     const correctText = givenSentence.textContent.trim();
 
     if (userText === correctText) {
-      currentSentenceIndex++;
-      if (currentSentenceIndex < selectedSentences.length) {
-        givenSentence.textContent = selectedSentences[currentSentenceIndex];
-        userInput.value = "";
-        resultDisplay.textContent = "정답입니다! 🎉";
-        resultDisplay.style.color = "green";
-      } else {
-        resultDisplay.textContent = "모든 문장을 완료했습니다! 🎉";
-        resultDisplay.style.color = "blue";
-
-        const moveMessage = document.createElement("p");
-        moveMessage.id = "countdown";
-        moveMessage.textContent = "3초 뒤에 결과 페이지로 이동합니다.";
-        moveMessage.style.marginTop = "10px";
-        moveMessage.style.color = "black";
-        moveMessage.style.fontWeight = "normal";
-        resultDisplay.appendChild(moveMessage);
-
-        userInput.disabled = true;
-
-        let countdown = 3;
-        const interval = setInterval(() => {
-          if (countdown > 1) {
-            countdown--;
-            moveMessage.textContent = `${countdown}초 뒤에 결과 페이지로 이동합니다.`;
-          } else {
-            clearInterval(interval);
-            window.location.href = "/typing-result.html";
-          }
-        }, 1000);
-      }
+      const endTime = new Date().getTime();
+      const elapsedTime = ((endTime - startTime) / 1000).toFixed(2);
+      socket.send(elapsedTime);
+      resultDisplay.textContent = "정답입니다! 상대방을 기다리는 중...";
+      resultDisplay.style.color = "green";
+      userInput.disabled = true;
     } else {
-      resultDisplay.textContent = "다시 시도해주세요. ❌";
+      resultDisplay.textContent = "틀렸습니다. 다시 시도하세요.";
       resultDisplay.style.color = "red";
     }
   }
