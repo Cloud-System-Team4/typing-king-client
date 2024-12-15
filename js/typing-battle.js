@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>승자: ${message.winner}</p>
       `;
       userInput.disabled = true;
+    } else if (message.type === "GAMING"){
+      // sentence 받은 것이 여기로 감감
+
     }
   };
 
@@ -69,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userText === correctText) {
       const endTime = new Date().getTime();
       const elapsedTime = ((endTime - startTime) / 1000).toFixed(2);
-      socket.send(elapsedTime);
+      socket.send(elapsedTime); //
       resultDisplay.textContent = "정답입니다! 상대방을 기다리는 중...";
       resultDisplay.style.color = "green";
       userInput.disabled = true;
