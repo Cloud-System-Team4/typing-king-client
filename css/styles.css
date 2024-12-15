@@ -32,6 +32,12 @@ main {
   font-weight: bold;
 }
 
+.welcome-description {
+  line-height: 1.2;
+  font-size: 18px;
+  color: #636363;
+}
+
 #start-game-button {
   width: 300px;
   padding: 10px 20px;
