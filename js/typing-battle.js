@@ -91,11 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       socket.send(message); // 서버로 메시지 전송
       console.log("'게임 시작하기' 메시지를 서버에 보냈습니다.");
-
-      // 100ms 딜레이 후 페이지 이동
-      setTimeout(() => {
-        window.location.href = "typing-battle.html";
-      }, 100);
     });
   }
 
