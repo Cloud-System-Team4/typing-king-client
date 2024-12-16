@@ -16,13 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = JSON.parse(event.data);
 
     if (message.type === "START") {
-      givenSentence.textContent = message.sentence;
-      resultDisplay.textContent = `게임 시작!`;
+      resultDisplay.textContent = `게임 시작! 당신은 ${message.role}입니다.`;
       resultDisplay.style.color = "black";
       userInput.disabled = false;
       userInput.focus();
     } else if (message.type === "NEXT_SENTENCE") {
       givenSentence.textContent = message.sentence;
+
       resultDisplay.textContent = "새 문장이 도착했습니다! 입력을 시작하세요.";
       resultDisplay.style.color = "black";
       userInput.disabled = false;
