@@ -6,34 +6,31 @@
     <title>내일은 타자왕</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/typing-battle.css" />
   </head>
   <body>
     <header>
       <div class="header-container">
-        <div class="header-logo">내일은 타자왕</div>
+        <a href="/"><div class="header-logo">내일은 타자왕</div></a>
+        <!-- <nav class="header-menu">
+          <a href="#about">소개</a>
+          <a href="#features">기능</a>
+        </nav> -->
       </div>
     </header>
 
     <main id="main-content">
-      <h2>문장을 입력한 후 Enter키를 눌러주세요.</h2>
-      <section id="typing-game">
-        <div class="sentence">
-          <label for="given-sentence">주어진 문장</label>
-          <div id="given-sentence">문장이 로딩 중입니다...</div>
-        </div>
-        <div class="sentence">
-          <label for="user-input">입력</label>
-          <input
-            type="text"
-            id="user-input"
-            placeholder="여기에 입력하세요"
-            autocomplete="off"
-            disabled
-          />
-        </div>
-        <div id="result"></div>
-      </section>
+      <div class="welcome-section">
+        <h1 class="welcome-title">
+          <strong>내일은 타자왕</strong>에 오신 것을 환영합니다!
+        </h1>
+        <p class="welcome-description">
+          빠르게 문장을 입력해 점수를 얻는 타자 게임입니다.<br />
+          최고의 타자왕이 되어 보세요!
+        </p>
+        <a href="typing-battle.html">
+          <button id="start-game-button">게임 시작하기</button></a
+        >
+      </div>
     </main>
 
     <footer>
@@ -48,7 +45,5 @@
         </a>
       </div>
     </footer>
-
-    <script src="js/typing-battle.js"></script>
   </body>
 </html>

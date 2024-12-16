@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userInput = document.getElementById("user-input");
   const resultDisplay = document.getElementById("result");
   const retryButton = document.getElementById("retry-button");
+  const startGameButton = document.getElementById("start-game-button"); // '게임 시작하기' 버튼
 
   // WebSocket 이벤트 핸들러
   socket.onopen = () => {
@@ -78,6 +79,23 @@ document.addEventListener("DOMContentLoaded", () => {
       checkAnswer();
     }
   });
+
+  // '게임 시작하기' 버튼 이벤트
+  if (startGameButton) {
+    startGameButton.addEventListener("click", () => {
+      const message = JSON.stringify({
+        type: "START_GAME",
+        start: true,
+      });
+      socket.send(message); // 서버로 메시지 전송
+      console.log("'게임 시작하기' 메시지를 서버에 보냈습니다.");
+
+      // 100ms 딜레이 후 페이지 이동
+      setTimeout(() => {
+        window.location.href = "typing-battle.html";
+      }, 100);
+    });
+  }
 
   // 재도전 버튼 이벤트
   if (retryButton) {
