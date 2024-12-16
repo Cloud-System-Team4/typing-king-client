@@ -1,35 +1,12 @@
-const SAMPLE_SENTENCES = [
-  "바람이 분다.",
-  "하늘은 높고 푸르다.",
-  "시간은 금이다.",
-  "모든 일에는 이유가 있다.",
-  "행복은 멀리 있지 않다.",
-  "인내는 쓰지만 그 열매는 달다.",
-  "사랑은 모든 것을 이긴다.",
-  "아는 것이 힘이다.",
-  "지혜는 무기보다 강하다.",
-  "모든 것은 변한다.",
-  "작은 일에도 최선을 다하자.",
-  "오늘은 다시 오지 않는다.",
-  "행동은 말보다 강하다.",
-  "꿈은 이루어진다.",
-  "웃음은 최고의 약이다.",
-  "성공은 준비된 자의 것이다.",
-  "기회는 준비된 사람에게 온다.",
-  "모든 일은 시작이 중요하다.",
-  "노력 없는 성공은 없다.",
-  "쉬운 길은 없다.",
-];
+const socket = new WebSocket("ws://localhost:9999"); // WebSocket 인스턴스 전역 선언
 
 document.addEventListener("DOMContentLoaded", () => {
   const givenSentence = document.getElementById("given-sentence");
   const userInput = document.getElementById("user-input");
   const resultDisplay = document.getElementById("result");
+  const retryButton = document.getElementById("retry-button");
 
-  const socket = new WebSocket("ws://localhost:9999");
-
-  let startTime = null;
-
+  // WebSocket 이벤트 핸들러
   socket.onopen = () => {
     console.log("서버에 연결되었습니다.");
   };
@@ -39,21 +16,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (message.type === "START") {
       givenSentence.textContent = message.sentence;
-      resultDisplay.textContent = `게임 시작! 당신은 ${message.role}입니다.`;
+      resultDisplay.textContent = `게임 시작!`;
       resultDisplay.style.color = "black";
-      startTime = new Date().getTime();
       userInput.disabled = false;
+      userInput.focus();
+    } else if (message.type === "NEXT_SENTENCE") {
+      givenSentence.textContent = message.sentence;
+      resultDisplay.textContent = "새 문장이 도착했습니다! 입력을 시작하세요.";
+      resultDisplay.style.color = "black";
+      userInput.disabled = false;
+      userInput.value = "";
       userInput.focus();
     } else if (message.type === "RESULT") {
       resultDisplay.innerHTML = `
-        <p>당신의 시간: ${message.your_time}초</p>
-        <p>상대방의 시간: ${message.opponent_time}초</p>
+        <p>당신의 총 소요 시간: ${message.total_time}초</p>
         <p>승자: ${message.winner}</p>
       `;
       userInput.disabled = true;
-    } else if (message.type === "GAMING"){
-      // sentence 받은 것이 여기로 감감
-
     }
   };
 
@@ -65,18 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("WebSocket 오류:", error);
   };
 
+  // 정답 체크
   function checkAnswer() {
     const userText = userInput.value.trim();
     const correctText = givenSentence.textContent.trim();
 
     if (userText === correctText) {
-      const endTime = new Date().getTime();
-      const elapsedTime = ((endTime - startTime) / 1000).toFixed(2);
-      socket.send(elapsedTime); //
-      resultDisplay.textContent = "정답입니다! 상대방을 기다리는 중...";
+      socket.send(
+        JSON.stringify({
+          type: "ANSWER",
+          correct: true,
+        })
+      );
+
+      resultDisplay.textContent = "정답입니다! 다음 문장을 기다리세요...";
       resultDisplay.style.color = "green";
       userInput.disabled = true;
     } else {
+      socket.send(
+        JSON.stringify({
+          type: "ANSWER",
+          correct: false,
+        })
+      );
+
       resultDisplay.textContent = "틀렸습니다. 다시 시도하세요.";
       resultDisplay.style.color = "red";
     }
@@ -87,4 +78,20 @@ document.addEventListener("DOMContentLoaded", () => {
       checkAnswer();
     }
   });
+
+  // 재도전 버튼 이벤트
+  if (retryButton) {
+    retryButton.addEventListener("click", (event) => {
+      event.preventDefault(); // 기본 링크 동작 방지
+      const message = JSON.stringify({
+        type: "RETRY",
+        continue: true,
+      });
+      socket.send(message); // 서버로 메시지 전송
+      console.log("재도전 여부를 서버에 전송했습니다.");
+
+      // 버튼 클릭 후 페이지 이동
+      window.location.href = "/typing-battle.html";
+    });
+  }
 });
