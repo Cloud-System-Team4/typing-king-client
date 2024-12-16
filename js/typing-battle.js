@@ -22,14 +22,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 카운트다운 처리
     else if (message.type === "COUNTDOWN") {
+      const playerRole = message.player; // 서버로부터 받은 플레이어 정보 (예: "Player1" 또는 "Player2")
+      const sentence = message.sentence; // 서버로부터 받은 첫 번째 문장
       let countdown = 3; // 카운트다운 시작 숫자
+
+      // 플레이어 정보 표시
+      resultDisplay.textContent = `당신은 ${playerRole}입니다. 게임이 곧 시작됩니다...`;
+
       const interval = setInterval(() => {
         resultDisplay.textContent = `${countdown}...`;
         countdown--;
         if (countdown < 0) {
           clearInterval(interval);
           resultDisplay.textContent = "게임 시작!";
-          givenSentence.textContent = message.sentence; // 첫 문장 표시
+          givenSentence.textContent = sentence; // 첫 문장 표시
           userInput.disabled = false;
           userInput.focus();
         }
