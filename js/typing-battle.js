@@ -1,4 +1,4 @@
-const socket = new WebSocket("wss://localhost:9998"); // WebSocket 인스턴스 전역 선언
+const socket = new WebSocket("ws://localhost:9998"); // WebSocket 인스턴스 전역 선언
 
 document.addEventListener("DOMContentLoaded", () => {
   const givenSentence = document.getElementById("given-sentence");
