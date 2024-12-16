@@ -15,39 +15,46 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data);
 
+    // 서버에서 START 메시지 수신
     if (message.type === "START") {
-      // 서버로부터 받은 문장을 화면에 표시
-      givenSentence.textContent = message.sentence; // 문장 설정
+      givenSentence.textContent = message.sentence; // 서버에서 받은 문장 표시
       resultDisplay.textContent = `게임 시작! 당신은 ${message.role}입니다.`;
       resultDisplay.style.color = "black";
       userInput.disabled = false;
-      userInput.focus();
-    } else if (message.type === "NEXT_SENTENCE") {
-      givenSentence.textContent = message.sentence;
+      userInput.focus(); // 입력창 활성화
+    }
+
+    // 서버에서 NEXT_SENTENCE 메시지 수신
+    else if (message.type === "NEXT_SENTENCE") {
+      givenSentence.textContent = message.sentence; // 새로운 문장 표시
       resultDisplay.textContent = "새 문장이 도착했습니다! 입력을 시작하세요.";
       resultDisplay.style.color = "black";
       userInput.disabled = false;
-      userInput.value = "";
+      userInput.value = ""; // 입력창 초기화
       userInput.focus();
-    } else if (message.type === "RESULT") {
+    }
+
+    // 서버에서 RESULT 메시지 수신
+    else if (message.type === "RESULT") {
       resultDisplay.innerHTML = `
         <p>당신의 총 소요 시간: ${message.total_time}초</p>
         <p>상대의 총 소요 시간: ${message.opponent_time}초</p>
         <p>승자: ${message.winner}</p>
       `;
-      userInput.disabled = true;
+      userInput.disabled = true; // 입력창 비활성화
     }
   };
 
   socket.onclose = () => {
     console.log("서버와 연결이 종료되었습니다.");
+    resultDisplay.textContent = "서버와 연결이 종료되었습니다. 새로고침하세요.";
   };
 
   socket.onerror = (error) => {
     console.error("WebSocket 오류:", error);
   };
 
-  // 정답 체크
+  // 클라이언트 → 서버: 정답 제출
   function checkAnswer() {
     const userText = userInput.value.trim();
     const correctText = givenSentence.textContent.trim();
@@ -55,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userText === correctText) {
       socket.send(
         JSON.stringify({
-          type: "ANSWER",
+          type: "ANSWER", // 정답 제출
           correct: true,
         })
       );
@@ -66,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       socket.send(
         JSON.stringify({
-          type: "ANSWER",
+          type: "ANSWER", // 오답 제출
           correct: false,
         })
       );
@@ -82,11 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // '게임 시작하기' 버튼 이벤트
+  // 클라이언트 → 서버: 게임 시작 요청
   if (startGameButton) {
     startGameButton.addEventListener("click", () => {
       const message = JSON.stringify({
-        type: "START_GAME",
+        type: "START_GAME", // 게임 시작 요청
         start: true,
       });
       socket.send(message); // 서버로 메시지 전송
@@ -94,18 +101,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 재도전 버튼 이벤트
+  // 클라이언트 → 서버: 재도전 요청
   if (retryButton) {
     retryButton.addEventListener("click", (event) => {
       event.preventDefault(); // 기본 링크 동작 방지
       const message = JSON.stringify({
-        type: "RETRY",
+        type: "RETRY", // 재도전 요청
         continue: true,
       });
       socket.send(message); // 서버로 메시지 전송
       console.log("재도전 여부를 서버에 전송했습니다.");
 
-      // 버튼 클릭 후 페이지 이동
+      // 페이지 새로고침
       window.location.href = "/typing-battle.html";
     });
   }
