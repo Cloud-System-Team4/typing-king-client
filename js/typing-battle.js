@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (message.type === "RESULT") {
       resultDisplay.innerHTML = `
         <p>당신의 총 소요 시간: ${message.total_time}초</p>
+        <p>상대의 총 소요 시간: ${message.opponent_time}초</p>
         <p>승자: ${message.winner}</p>
       `;
       userInput.disabled = true;
