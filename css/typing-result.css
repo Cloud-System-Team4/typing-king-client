@@ -8,10 +8,11 @@
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   text-align: center;
   color: #333;
+  padding: 14px;
 }
 
 .timer-container {
@@ -32,7 +33,7 @@ h2 {
   justify-content: center;
   border: 1px solid #000;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
 }

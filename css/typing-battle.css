@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 600px;
+  width: 700px;
   margin: 0 auto;
   padding: 30px 20px;
   border: 1px solid #ddd;
@@ -21,7 +21,7 @@
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   text-align: center;
   color: #333;
@@ -42,23 +42,31 @@ label {
   white-space: nowrap;
   width: 80px;
 }
-
-#given-sentence {
-  flex: 1;
-  background-color: #eaeaea;
+/* 입력창 스타일링 */
+#user-input {
+  width: 100%; /* 너비를 부모 요소에 맞춤 */
+  max-width: 600px; /* 최대 너비 지정 */
+  min-height: 50px; /* 최소 높이 */
+  resize: none; /* 사용자가 크기를 조절하지 못하도록 설정 */
+  font-size: 16px;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  text-align: left;
-  user-select: none;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
 
-#user-input {
-  flex: 1;
+/* 주어진 문장 스타일링 */
+#given-sentence {
+  width: 100%;
+  max-width: 900px; /* 문장 길이 너비 제한 */
+  word-wrap: break-word; /* 긴 문장은 줄바꿈 */
   padding: 10px;
-  font-size: 16px;
+  font-size: 18px;
+  /* margin-bottom: 15px; */
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   box-sizing: border-box;
 }
 
