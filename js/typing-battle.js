@@ -45,6 +45,45 @@ function showSentence() {
   userInputElement.focus();
 }
 
+// 게임 시작 전 대기 화면
+function showMatchingScreen() {
+  resultDisplay.textContent = "서버에 연결되었습니다. 매칭 대기 중...";
+  resultDisplay.style.color = "black"; // 기본 색상 (검정)
+
+  userInputElement.disabled = true;
+
+  // 5초 후에 다음 메시지
+  setTimeout(() => {
+    resultDisplay.textContent = "매칭 중입니다... 잠시만 기다려주세요!";
+    resultDisplay.style.color = "blue"; // 파란색 적용
+
+    // 2초 후에 매칭 완료 메시지 및 카운트다운 시작
+    setTimeout(() => {
+      startCountdown();
+    }, 2000);
+  }, 5000);
+}
+
+// 3초 카운트다운 시작
+function startCountdown() {
+  let countdown = 3;
+  resultDisplay.textContent = `매칭 완료! ${countdown}초 뒤 게임을 시작합니다.`;
+  resultDisplay.style.color = "red"; // 빨간색 적용
+
+  const countdownInterval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      resultDisplay.textContent = `매칭 완료! ${countdown}초 뒤 게임을 시작합니다.`;
+    } else {
+      clearInterval(countdownInterval);
+      resultDisplay.textContent = "게임 시작!";
+      resultDisplay.style.color = "black"; // 기본 색상으로 변경
+      userInputElement.disabled = false; // 입력 활성화
+      initializeGame(); // 게임 시작
+    }
+  }, 1000);
+}
+
 // 정답 체크
 function checkAnswer() {
   const userText = userInputElement.value.trim();
@@ -86,29 +125,9 @@ userInputElement.addEventListener("keydown", (event) => {
   }
 });
 
-// 페이지 로드 시 게임 초기화
+// 페이지 로드 시 매칭 화면 표시
 document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname.includes("typing-battle.html")) {
-    initializeGame();
-  }
-});
-
-// 결과 페이지 처리
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.location.pathname.includes("typing-result.html")) {
-    const playerTime = localStorage.getItem("playerTime");
-    const opponentTime = localStorage.getItem("opponentTime");
-    const timerBox = document.querySelectorAll(".timer-box span");
-    const resultMessage = document.querySelector(".result-message");
-
-    if (playerTime && opponentTime) {
-      timerBox[0].textContent = `내 기록: ${playerTime}초`;
-      timerBox[1].textContent = `상대 기록: ${opponentTime}초`;
-
-      // 승자 판별
-      const winner =
-        parseFloat(playerTime) < parseFloat(opponentTime) ? "내" : "상대";
-      resultMessage.innerHTML = `<strong>${winner}</strong>가 이겼습니다!`;
-    }
+    showMatchingScreen(); // 대기 화면 표시
   }
 });
