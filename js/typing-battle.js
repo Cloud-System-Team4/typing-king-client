@@ -61,7 +61,7 @@ function showMatchingScreen() {
     setTimeout(() => {
       startCountdown();
     }, 2000);
-  }, 5000);
+  }, 3000);
 }
 
 // 3초 카운트다운 시작
@@ -111,11 +111,17 @@ function finishGame() {
   const elapsedTime = ((endTime - startTime) / 1000).toFixed(2); // 소요 시간 계산
   const opponentTime = (Math.random() * (30 - 10) + 10).toFixed(2); // 상대 시간 랜덤 생성 (10초 ~ 30초)
 
-  // 결과 페이지로 데이터 전달
-  localStorage.setItem("playerTime", elapsedTime);
-  localStorage.setItem("opponentTime", opponentTime);
+  // 종료 메시지 표시 및 5초 대기
+  resultDisplay.textContent =
+    "게임이 종료되었습니다. 상대방의 결과를 기다리는 중입니다...";
+  resultDisplay.style.color = "red";
+  userInputElement.disabled = true;
 
-  window.location.href = "typing-result.html";
+  setTimeout(() => {
+    localStorage.setItem("playerTime", elapsedTime);
+    localStorage.setItem("opponentTime", opponentTime);
+    window.location.href = "typing-result.html";
+  }, 5000);
 }
 
 // 이벤트 리스너
